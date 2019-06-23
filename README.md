@@ -61,41 +61,21 @@ LFM算法的背景
 
 LFM建模公式：
 
-$$
-p\left( u,i \right) = p_{u}^{T}q_{i} = \sum_{f = 1}^{F}{p_{\text{uf}}q_{\text{if}}}
-$$
+![](media/790c4468cd7f4a6138bf9cea0b60f792.png)
 
 LFM loss function
 
-$$
-loss = \sum_{(u,i) \in D}^{}{(p\left( u,i \right) - p^{\text{LFM}}(u,i))^{2}}
-$$
-
-$$
-loss = \sum_{(u,i) \in D}^{}{{(p\left( u,i \right) - \sum_{f = 1}^{F}{p_{\text{uf}}q_{\text{if}}})}^{2} + \alpha_{1}\left| p_{u} \right|^{2} + \alpha_{2}\left| q_{i} \right|^{2}}
-$$
+![](media/be5e4dd081b423a8cf29d6ee7963ddf2.png)
 
 LFM算法迭代
 
 对上式求偏导：
 
-$$
-\frac{\partial\text{loss}}{\partial p_{\text{uf}}} = - 2\left( p\left( u,i \right) - p^{\text{LFM}}\left( u,i \right) \right)q_{\text{if}} + 2\alpha_{1}p_{\text{uf}}
-$$
-
-$$
-\frac{\partial\text{loss}}{\partial q_{\text{if}}} = - 2\left( p\left( u,i \right) - p^{\text{LFM}}\left( u,i \right) \right)p_{\text{uf}} + 2\alpha_{2}q_{\text{if}}
-$$
+![](media/ec631674e7e03792051c20603a829768.png)
 
 使用梯度下降算法
 
-$$
-p_{\text{uf}} = p_{\text{uf}} - \beta\frac{\partial loss}{\partial p_{\text{uf}}}
-$$
-
-$$
-q_{\text{if}} = q_{\text{if}} - \beta\frac{\partial loss}{\partial q_{\text{if}}}
-$$
+![](media/8efce0b420da9edbe6520bb7cf4b8c46.png)
 
 参数设定影响效果
 
@@ -160,26 +140,11 @@ walk，以alpha的概率从A的出边中等概率选择一条游走过去，到�
 
 ### 3.2.2 算法抽象-数学公式
 
-$$
-\text{PR}\left( v \right) = \left\{ \begin{matrix}
-\alpha*\sum_{\tilde{v \in v}}^{}{\frac{PR(\tilde{v})}{\left| out(\tilde{v}) \right|} (v! = v_{A})} \\
-\left( 1 - \alpha \right) + \alpha*\sum_{\tilde{v \in v}}^{}{\frac{PR(\tilde{v})}{\left| out(\tilde{v}) \right|} (v = v_{A})} \\
-\end{matrix} \right.\ 
-$$
+![](media/5833308ce7f2a28ff0a383ead1a47cc2.png)
 
 ### 3.2.3 算法抽象-矩阵式
 
-$$
-r = \left( 1 - \alpha \right)r_{0} + \alpha M^{T}\text{r\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }M_{\text{ij}} = \frac{1}{\left| out(i) \right|}j \in out\left( i \right)else0
-$$
-
-$$
-\left( E - \alpha M^{T} \right)*r = \left( 1 - \alpha \right)r_{0}
-$$
-
-$$
-r = \left( E - \alpha M^{T} \right)\left( 1 - \alpha \right)r_{0}
-$$
+![](media/fa4ace6874d6f8b2ede42b8399d98a21.png)
 
 4 item2vec算法
 ==============
@@ -193,7 +158,8 @@ Item2item的推荐方式效果显著
 
 NN model的特征抽象能力
 
-算法论文：ITEM2VEC: NEURAL ITEM EMBEDDING FOR COLLABORATIVE FILTERING
+算法论文：ITEM2VEC: NEURAL ITEM EMBEDDING FOR COLLABORATIVE
+FILTERING(/doc/1603.4259.pdf)
 
 https://blog.csdn.net/qq_35771020/article/details/89137392
 
@@ -237,37 +203,15 @@ Example:
 
 **问题抽象**：
 
-$$
-g\left( w \right) = \prod_{u \in w \cup NEG(w)}^{}{p\left( u \middle| \text{Context}\left( w \right) \right)}
-$$
-
-$$
-p\left( u \middle| \text{Context}\left( w \right) \right) = \sigma(X_{w}^{T}\theta^{u})^{L^{w}\left( u \right)}(1 - \sigma(X_{w}^{T}\theta^{u}))^{({1 - L}^{w}(u))}
-$$
+![](media/3167f6aaa1b626a72417449f18a8d6ca.png)
 
 Loss Function
 
-$$
-Loss = \log{(g(w))}
-$$
-
-$$
-Loss = \sum_{}^{}{(L^{w}\left( u \right)*\log{\left( \sigma\left( X_{w}^{T}\theta^{u} \right) \right) + \left( 1 - L^{w}\left( u \right) \right)*}\log\left( 1 - \sigma\left( X_{w}^{T}\theta^{u} \right) \right))}
-$$
+![](media/88839c1b1d462e8fb73a7760a62dac45.png)
 
 **梯度**：
 
-$$
-\frac{\partial\text{Loss}}{\partial\theta^{u}} = \left( L^{w}\left( u \right) - \delta\left( x_{w}^{T}\theta^{u} \right) \right)x_{w}\text{\ \ \ \ \ \ \ \ \ }\theta^{u} = \theta^{u} + \alpha*\frac{\partial Loss}{\partial\theta^{u}}
-$$
-
-$$
-\frac{\partial\text{Loss}}{\partial x_{w}} = \left( L^{w}\left( u \right) - \delta\left( x_{w}^{T}\theta^{u} \right) \right)\theta^{u}
-$$
-
-$$
-v\left( w_{\text{context}} \right) = v\left( w_{\text{context}} \right) + \sum_{u \in w \cup NEG(w)}^{}{\alpha*\frac{\partial Loss}{\partial x_{w}}}
-$$
+![](media/160fa8356b49d16d0d94343ade0d41cd.png)
 
 **CBOW训练主流程**
 
@@ -281,27 +225,11 @@ $$
 
 **问题抽象**
 
-$$
-G = \prod_{u \in Context(w)}^{}{\prod_{z \in u \cup NEG\left( u \right)}^{}{p\left( z \middle| w \right)}}
-$$
-
-$$
-p\left( z \middle| w \right) = (\delta(v\left( w)^{T}\theta^{z} \right))^{L^{u}\left( z \right)}*(1 - \delta(v\left( w)^{T}\theta^{z} \right))^{1 - L^{u}(z)}
-$$
+![](media/762d6fb94b32cbf97df0ac4e106ba30b.png)
 
 Loss Function
 
-$$
-Loss = \sum_{u \in Context(w)}^{}{\sum_{z \in u \cup NEG(u)}^{}{L^{u}\left( z \right)*\log{(\delta(v{(w)}^{T}\theta^{z}))}}} + \left( 1 - L^{u}\left( z \right) \right)*\log{(1 - \delta(v{(w)}^{T}\theta^{z}))}
-$$
-
-$$
-G = \prod_{w^{c} \in context(w)}^{}{\prod_{u \in w \cup NEG(w)}^{}{p(u|w^{c})}}
-$$
-
-$$
-Loss = \sum_{w^{c} \in Context(w)}^{}{\sum_{u \in w \cup NEG(w)}^{}{L^{w}\left( u \right)*\log{(\delta(v{(w^{c})}^{T}\theta^{u}))}}} + \left( 1 - L^{w}\left( u \right) \right)*\log{(1 - \delta(v{(w^{c})}^{T}\theta^{u}))}
-$$
+![](media/a3a65fe9eabfb8887dbc956fb4c58d86.png)
 
 **Skip Gram word2vec训练主流程**
 
@@ -317,9 +245,7 @@ $$
 
 ![](media/f02ab9775957bcbdd1b19c00a2f8a10b.png)
 
-$$
-\text{len}\left( \text{word} \right) = \frac{{(counter(word))}^{\alpha}}{\sum_{w \in D}^{}{(counter(word))}^{\alpha}}
-$$
+![](media/5151c079183d427e88c875cd712cc5f3.png)
 
 5 content based算法
 ===================
@@ -458,67 +384,27 @@ LR模型训练流程
 
 ### 8.2.1 阶跃函数及其导数
 
-$$
-f\left( x \right) = \frac{1}{1 + exp( - x)}
-$$
-
-$$
-f^{'}\left( x \right) = \frac{exp( - x)}{{(1 + exp( - x))}^{2}}
-$$
-
-$$
-f^{'}\left( x \right) = \frac{1}{1 + exp( - x)}*\frac{1 + \exp\left( - x \right) - 1}{1 + exp( - x)}
-$$
+![](media/521d14691abb42a9c52fb2fe9a92dcc2.png)
 
 ### 8.2.2 LR Model Function
 
 Model function
 
-$$
-w = w_{1}*x_{1} + w_{2}*x_{2} + + w_{n}*x_{n}
-$$
-
-$$
-y = sigmoid(w)
-$$
+![](media/90b44097c1dd5c8963f0bda6fc3a59ef.png)
 
 ### 8.2.3 Loss Function
 
-$$
-loss = \log{\prod_{i = 1}^{n}{p(y_{i}|x_{i})}}
-$$
-
-$$
-p\left( y_{i} \middle| x_{i} \right) = h_{w}\left( x_{i} \right)^{y_{i}}(1 - h_{w}(x_{i}))^{1 - y_{i}}
-$$
-
-$$
-loss = - \left( y_{i}\log{h_{w}\left( x_{i} \right)} + \left( 1 - y_{i} \right)\log\left( 1 - h_{w}\left( x_{i} \right) \right) \right)
-$$
+![](media/7a411e2c9f9690c80841d60e3f9617ac.png)
 
 ### 8.2.4 梯度
 
-$$
-\frac{\partial\text{loss}}{\partial w_{j}} = \frac{\partial loss}{\partial h_{w}(x_{i})}\frac{\partial h_{w}(x_{i})}{\partial w}\frac{\partial w}{\partial w_{j}}
-$$
+![](media/1ccec14efac8f4df934746c70cd5bc30.png)
 
-$$
-\frac{\partial loss}{\partial h_{w}(x_{i})} = - (\frac{y_{i}}{h_{w}(x_{i})} + \frac{y_{i} - 1}{{1 - h}_{w}(x_{i})})
-$$
-
-$$
-\frac{\partial h_{w}\left( x_{i} \right)}{\partial w}\frac{\partial w}{\partial w_{j}} = h_{w}\left( x_{i} \right)\left( 1 - h_{w}\left( x_{i} \right) \right)x_{i}^{j}
-$$
+![](media/3c4fe078ba8afa85a320318e49cdc07b.png)
 
 梯度下降
 
-$$
-\frac{\partial\text{loss}}{\partial w_{j}} = (h_{w}\left( x_{i} \right) - y_{i})x_{i}^{j}
-$$
-
-$$
-w_{j} = w_{j} - \alpha\frac{\partial loss}{\partial w_{j}}
-$$
+![](media/4028ce04d0aa1793de81824f89670777.png)
 
 ### 8.2.5 正则化
 
@@ -532,15 +418,11 @@ L1正则化与L2正则化
 
 L1：
 
-$$
-\text{loss}_{\text{new}} = loss + \alpha\sum_{i = 1}^{n}\left| w_{i} \right|
-$$
+![](media/7cd027b06da36d3be6f7233b24a2038e.png)
 
 L2:
 
-$$
-\text{loss}_{\text{new}} = loss + \alpha\left| w \right|^{2}
-$$
+![](media/e1270659bd5fddd22d3248f1826737ca.png)
 
 8.3 样本选择与特征选择相关知识
 ------------------------------
@@ -580,31 +462,11 @@ Tree）是在已知各种情况发生概率的基础上，通过构成决策树�
 
 回归树的函数表示
 
-$$
-f\left( x \right) = \sum_{m = 1}^{M}{c_{m}I(x \in R_{m})}
-$$
-
-$$
-\sum_{x_{i} \in R_{m}}^{}{(y_{i} - f(x_{i}))}^{2}
-$$
-
-$$
-c_{m} = ave(y_{i}|x_{i} \in R_{m})
-$$
+![](media/1aea1b9af6e644094d4fd14f0851f860.png)
 
 最优特征选取
 
-$$
-\operatorname{}{\lbrack\operatorname{}{\sum_{x_{1} \in R_{1}}^{}{{(y_{i} - C_{1})}^{2} + \operatorname{}{\sum_{x_{1} \in R_{2}}^{}{(y_{i} - C_{2})}^{2}}}}\rbrack}
-$$
-
-$$
-R_{1} = \left\{ x \middle| x^{j} \leq s \right\},R_{2} = \left\{ x \middle| x^{j} > s \right\}
-$$
-
-$$
-c_{1} = ave\left( y_{i} \middle| x_{i} \in R_{1} \right),c_{2} = ave\left( y_{i} \middle| x_{i} \in R_{2} \right)
-$$
+![](media/6d7d4bdcec8dfd59f0ace721ee164511.png)
 
 构建树的流程
 
@@ -624,17 +486,7 @@ $$
 
 基尼指数
 
-$$
-\text{Gini}\left( D \right) = 1 - \sum_{k = 1}^{K}\left( \frac{\left| C_{k} \right|}{\left| D \right|} \right)^{2}
-$$
-
-$$
-D_{1} = \left\{ \left( x,y \right) \in D \middle| A\left( x \right) \geq a \right\},D_{2} = D - D_{1}
-$$
-
-$$
-\text{Gini}\left( D,A \right) = \frac{\left| D_{1} \right|}{\left| D \right|}\text{Gini}\left( D_{1} \right) + \frac{\left| D_{2} \right|}{\left| D \right|}\text{Gini}\left( D_{2} \right)
-$$
+![](media/e805ccdf05558b9267f29c97a3a6ded7.png)
 
 ![](media/9be30f0ef9abde4678382d44ab1ea052.png)
 
@@ -651,27 +503,13 @@ $$
 
 ### 9.2.2 Boosting Tree模型函数
 
-$$
-f_{M}\left( x \right) = \sum_{m = 1}^{M}{T(x;\theta_{m})}
-$$
+![](media/cd9d5ee5be2447566e01fd9fc476963e.png)
 
-$$
-f_{m}\left( x \right) = f_{m - 1}\left( x \right) + T(x;\theta_{m})
-$$
-
-$$
-\theta_{m} = arg\operatorname{}{\sum_{i = 1}^{N}{L\left( y_{i},f_{m - 1}\left( x_{i} \right) + T\left( x_{i},\theta_{m} \right) \right)}}
-$$
+![](media/3d45ae0f8bfe2e9a5ac907f5c8d811c4.png)
 
 迭代损失函数
 
-$$
-L\left( y,f\left( x \right) \right) = \left( y - f\left( x \right) \right)^{2}
-$$
-
-$$
-L\left( y,f_{m}\left( x \right) \right) = {\lbrack y - f_{m - 1}\left( x \right) - T(x;\theta_{m})\rbrack}^{2}
-$$
+![](media/0ecb312b4961390aceda3a36cb2c2439.png)
 
 ### 9.2.3 提升树的算法流程
 
@@ -691,88 +529,34 @@ Example
 
 残差的数值改变
 
-$$
-r_{m} = - {\lbrack\frac{\partial L(y,f(x_{i}))}{\partial f(x_{i})}\rbrack}_{f\left( x \right) = f_{m - 1}(x)}
-$$
+![](media/baa16bca8f5833be121e73fcefaebf87.png)
 
 9.3 XGBoost数学原理与构建方法
 -----------------------------
 
 ### 9.3.1 XGBoost模型函数
 
-$$
-f_{M}\left( x \right) = \sum_{m = 1}^{M}{T\left( x;\theta_{m} \right)}
-$$
-
-$$
-f_{m}\left( x \right) = f_{m - 1}\left( x \right) + T\left( x;\theta_{m} \right)
-$$
-
-$$
-\arg\operatorname{}{\sum_{i = 1}^{N}{L\left( y_{i},f_{m - 1}\left( x_{i} \right) + T\left( x_{i};\theta_{m} \right) \right)} + \Omega\left( T_{m} \right)}
-$$
+![](media/fd4f0b5daa33f79acba75502440e88b3.png)
 
 ### 9.3.2 优化目标的泰勒展开
 
-$$
-f\left( x + \Delta x \right) \approx f\left( x \right) + f^{'}\left( x \right)x + \frac{1}{2}f''(x)x^{2}
-$$
-
-$$
-\operatorname{}{\sum_{i = 1}^{N}{\left\lbrack g_{i}T_{m} + 0.5*h_{i}T_{m}^{2} \right\rbrack + \Omega\left( T_{m} \right)}}
-$$
-
-$$
-g_{i} = \frac{\partial L\left( y_{i},f_{m - 1} \right)}{\partial f_{m - 1}},h_{i} = \frac{\partial^{2}L\left( y_{i},f_{m - 1} \right)}{\partial f_{m - 1}}
-$$
+![](media/af00c61e64363d57ab48a78b0b3c0422.png)
 
 ### 9.3.3 定义模型复杂度
 
-$$
-f\left( x \right) = \sum_{j = 1}^{Q}{c_{j}I\left( x \in R_{j} \right)}
-$$
-
-$$
-\Omega\left( T_{m} \right) = \partial Q + 0.5\beta\sum_{j = 1}^{Q}c_{j}^{2}
-$$
+![](media/e3b52ee5750dad9af62ce8e92853c01b.png)
 
 ### 9.3.4 目标转化
 
-$$
-\operatorname{}{\sum_{i = 1}^{N}{\left\lbrack g_{i}T_{m} + 0.5*h_{i}T_{m}^{2} \right\rbrack + \Omega\left( T_{m} \right)}}
-$$
-
-$$
-\operatorname{}{\sum_{i = 1}^{N}{\left\lbrack g_{i}T_{m} + 0.5*h_{i}T_{m}^{2} \right\rbrack + \partial Q + 0.5\beta\sum_{j = 1}^{Q}c_{j}^{2}}}
-$$
-
-$$
-\operatorname{}{\sum_{j = 1}^{Q}{\left\lbrack \left( \sum_{i \in R_{j}}^{}g_{i} \right)c_{j} + 0.5\left( \sum_{i \in R_{j}}^{}{h_{i} + \beta} \right)c_{j}^{2} \right\rbrack + \partial Q}}
-$$
+![](media/e4e13e048c924deeba012919b4318f10.png)
 
 ### 9.3.5 目标函数最优解
 
-$$
-G_{j} = \sum_{i \in R_{j}}^{}{g_{i},H_{j} = \sum_{i \in R_{j}}^{}h_{i}}
-$$
-
-$$
-\operatorname{}{\sum_{j = 1}^{Q}{{\lbrack G}_{j}c_{j} + 0.5(H_{j} + \beta)c_{j}^{2}\rbrack}} + \partial Q
-$$
-
-$$
-c_{j} = - \frac{G_{j}}{H_{j} + \beta},obj = - 0.5\sum_{i = 1}^{Q}{\frac{G_{j}^{2}}{H_{j} + \beta} + \partial Q}
-$$
+![](media/a3a406631f48d1617ad9897885be87d1.png)
 
 ### 9.3.6 最佳划分特征选取
 
-$$
-c_{j} = - \frac{G_{j}}{H_{j} + \beta},obj = - 0.5\sum_{i = 1}^{Q}{\frac{G_{j}^{2}}{H_{j} + \beta} + \partial Q}
-$$
-
-$$
-G_{\text{ain}} = \left( \frac{G_{L}^{2}}{H_{L} + \beta} + \frac{G_{R}^{2}}{H_{R} + \beta} - \frac{{(G_{R} + G_{L})}^{2}}{H_{R} + H_{L} + \beta} \right) - \partial
-$$
+![](media/1700eccdcc166f0b3e98ca91090eb5b0.png)
 
 ### 9.3.7 XGBoost总流程
 
@@ -848,53 +632,19 @@ relu
 
 节点的输出值
 
-$$
-a_{j}^{t} = f(\sum_{k}^{}w_{\text{jk}}^{t}a_{k}^{t - 1} + b_{j}^{t})
-$$
+![](media/d17d1320a29be6ae1c8f860d5b524856.png)
 
-$$
-z_{j}^{t} = \sum_{k}^{}w_{\text{jk}}^{t}a_{k}^{t - 1} + b_{j}^{t}
-$$
+![](media/f214026916c810a114e191935ac625bd.png)
 
 ![](media/6dd780807378922fd26d261095d49c95.png)
 
 ### 10.2.3 反向传播
 
-Our Target
-
-$$
-\frac{\partial L}{\partial w_{\text{jk}}^{t}}\text{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }\frac{\partial L}{\partial b_{j}^{t}}
-$$
-
-What we have
-
-$$
-\frac{\partial L}{\partial a_{j}^{T}}\text{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }\frac{\partial L}{\partial z_{j}^{T}}
-$$
-
-推导
-
-$$
-\frac{\partial L}{\partial b_{j}^{t}} = \frac{\partial L}{\partial z_{j}^{t}}*\frac{\partial z_{j}^{t}}{\partial b_{j}^{t}} = \frac{\partial L}{\partial z_{j}^{t}}\text{\ \ \ \ \ \ \ \ \ \ \ \ \ \ }z_{j}^{t} = \sum_{k}^{}w_{\text{jk}}^{t}a_{k}^{t - 1} + b_{j}^{t}
-$$
-
-$$
-\frac{\partial L}{\partial w_{\text{jk}}^{t}} = \frac{\partial L}{\partial z_{j}^{t}}*\frac{\partial z_{j}^{t}}{\partial w_{\text{jk}}^{t}} = \frac{\partial L}{\partial z_{j}^{t}}*a_{k}^{t - 1}
-$$
+![](media/b30664131af598997798bea84c14c17f.png)
 
 核心
 
-$$
-\frac{\partial L}{\partial z_{j}^{t - 1}} = \sum_{k}^{}\frac{\partial L}{\partial z_{k}^{t}}\frac{\partial z_{k}^{t}}{\partial z_{j}^{t - 1}}
-$$
-
-$$
-z_{j}^{t} = \sum_{k}^{}w_{\text{jk}}^{t}a_{k}^{t - 1} + b_{j}^{t}
-$$
-
-$$
-\frac{{\partial z}_{k}^{t}}{\partial z_{j}^{t - 1}} = \frac{{\partial z}_{k}^{t}}{\partial a_{j}^{t - 1}}\frac{\partial a_{j}^{t - 1}}{\partial z_{j}^{t - 1}} = w_{\text{jk}}^{t}\frac{\partial a_{j}^{t - 1}}{\partial z_{j}^{t - 1}}
-$$
+![](media/fea431859b74021badecc2cb2facb9a4.png)
 
 -   对输入x，设置合理的输入向量
 
@@ -913,7 +663,7 @@ $$
 
 论文：wide & deep learning for Recommender Systems
 
-Generalization and Memorization
+Generalization and Memorization(/doc/p7-cheng.pdf)
 
 ### 10.3.2 w&d的网络结构
 
@@ -923,35 +673,17 @@ x
 
 模型输出
 
-$$
-a_{\text{out}}^{T} = h\left( w_{\text{wide}},w_{\text{deep}} \right) = \sigma(w_{\text{wide}}\left\lbrack x,x_{\text{cross}} \right\rbrack + w_{\text{deep}}a_{\text{out}}^{T - 1} + b^{T})
-$$
+![](media/9ecd47f97b1b955ca6d56bb13a9c3ae5.png)
 
 ### 10.3.3 WD model的反向传播
 
 Wide侧参数学习
 
-$$
-\frac{\partial L}{\partial w_{\text{widej}}} = \frac{\partial L}{\partial a^{T}}\frac{\partial a^{T}}{\partial z^{T}}\frac{\partial z^{T}}{\partial w_{\text{widej}}} = \frac{\partial L}{\partial a^{T}}\sigma'(z^{T})x_{\text{widej}}
-$$
+![](media/1299b6c4913285a42f891df4bf20e5dc.png)
 
 Deep侧参数学习
 
-$$
-\frac{\partial L}{\partial z_{j}^{t - 1}} = \sum_{k}^{}\frac{\partial L}{\partial z_{k}^{t}}\frac{\partial z_{k}^{t}}{\partial a_{j}^{t - 1}}\frac{\partial a_{j}^{t - 1}}{\partial z_{j}^{t - 1}} = \sum_{k}^{}\frac{\partial L}{\partial z_{k}^{t}}w_{\text{deepkj}}^{t}\frac{\partial a_{j}^{t - 1}}{\partial z_{j}^{t - 1}}
-$$
-
-$$
-z_{k}^{t} = \sum_{j}^{}w_{\text{deepkj}}^{t}a_{j}^{t - 1} + b_{k}^{t} \rightarrow t \neq T
-$$
-
-$$
-z_{k}^{t} = \left( \sum_{j}^{}w_{\text{deepkj}}^{t}a_{j}^{t - 1} + b_{k}^{t} \right) + w_{\text{wide}}*X \rightarrow t = T
-$$
-
-$$
-\frac{\partial L}{\partial b_{j}^{t}} = \frac{\partial L}{\partial z_{j}^{t}}*\frac{\partial z_{j}^{t}}{\partial b_{j}^{t}} = \frac{\partial L}{\partial z_{j}^{t}}\text{\ \ \ \ \ }\frac{\partial L}{\partial w_{\text{jk}}^{t}} = \frac{\partial L}{\partial z_{j}^{t}}*\frac{\partial z_{j}^{t}}{\partial w_{\text{jk}}^{t}} = \frac{\partial L}{\partial z_{j}^{t}}*a_{k}^{t - 1}
-$$
+![](media/a1e5b01ddc8e9af997dfe8f726ffe0ad.png)
 
 ### 10.3.4 server架构
 
