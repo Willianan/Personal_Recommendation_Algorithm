@@ -1,4 +1,4 @@
-package Mahout.MovieLens;
+package com.dylan.MovieLens;
 
 import org.apache.commons.io.Charsets;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;

@@ -1,4 +1,4 @@
-package Mahout.example;
+package com.dylan.example;
 
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder;

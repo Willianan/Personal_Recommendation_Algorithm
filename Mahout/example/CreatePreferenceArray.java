@@ -1,4 +1,4 @@
-package Mahout.example;
+package com.dylan.example;
 
 import org.apache.mahout.cf.taste.impl.model.GenericUserPreferenceArray;
 import org.apache.mahout.cf.taste.model.Preference;

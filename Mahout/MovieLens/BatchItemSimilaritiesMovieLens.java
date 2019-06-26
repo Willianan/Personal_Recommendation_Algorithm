@@ -1,4 +1,4 @@
-package Mahout.MovieLens;
+package com.dylan.MovieLens;
 
 
 import org.apache.mahout.cf.taste.impl.recommender.GenericItemBasedRecommender;

@@ -1,4 +1,4 @@
-package Mahout.BookCrossing;
+package com.dylan.BookCrossing;
 
 import org.apache.mahout.cf.taste.common.Refreshable;
 import org.apache.mahout.cf.taste.common.TasteException;

@@ -1,4 +1,4 @@
-package Mahout.BookCrossing;
+package com.dylan.BookCrossing;
 
 import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import org.apache.mahout.cf.taste.common.Refreshable;

@@ -1,4 +1,4 @@
-package Mahout.practice;
+package com.dylan.practice;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import org.apache.mahout.cf.taste.common.TasteException;
@@ -35,7 +35,7 @@ public class MysqlDataMovieRecommend {
         mysqlDataSource.setFailOverReadOnly(false);
 
 
-        JDBCDataModel dataModel = new MySQLJDBCDataModel(mysqlDataSource, "taste_preferences", "user_id", "item_id", "preference", null);
+        JDBCDataModel dataModel = new MySQLJDBCDataModel(mysqlDataSource, "taste_preferences2", "user_id", "item_id", "preference", null);
         DataModel model = dataModel;
 
         //Recommendations

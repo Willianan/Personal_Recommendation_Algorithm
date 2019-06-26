@@ -1,4 +1,4 @@
-package Mahout.example;
+package com.dylan.example;
 
 import org.apache.mahout.cf.taste.impl.common.FastByIDMap;
 import org.apache.mahout.cf.taste.impl.model.GenericDataModel;

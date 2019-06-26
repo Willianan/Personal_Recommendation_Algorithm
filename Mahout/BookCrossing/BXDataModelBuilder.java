@@ -1,4 +1,4 @@
-package Mahout.BookCrossing;
+package com.dylan.BookCrossing;
 
 import org.apache.mahout.cf.taste.eval.DataModelBuilder;
 import org.apache.mahout.cf.taste.impl.common.FastByIDMap;

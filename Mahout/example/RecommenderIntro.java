@@ -1,4 +1,4 @@
-package Mahout.example;
+package com.dylan.example;
 
 import org.apache.mahout.cf.taste.impl.model.file.*;
 import org.apache.mahout.cf.taste.impl.similarity.*;

@@ -1,5 +1,6 @@
 package com.dylan.MovieLens;
 
+
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
 import org.apache.mahout.cf.taste.impl.eval.RMSRecommenderEvaluator;
@@ -18,28 +19,30 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class UserRecommenderMovieLens {
-    private UserRecommenderMovieLens(){
+public class UserBasedRecommenderMovieLens {
+    private UserBasedRecommenderMovieLens() {
     }
 
-    public static void main(String[] args) throws Exception {
-
+    public static void main(String[] args) throws Exception{
         if (args.length != 1) {
-            System.err.println("Needs MovieLens 1M dataset as arugument!");
+            System.err.println("Needs MovieLens 1M dataset as argument!");
             System.exit(-1);
         }
 
-        File resultFile = new File(System.getProperty("java.io.tmpdir"), "userRcomed.csv");
+        File resultFile = new File(System.getProperty("java.io.tmpdir"), "userRecom.csv");
+        if (resultFile.exists()) {
+            resultFile.delete();
+        }
 
-        DataModel dataModel = new MovieLensDataModel(new File(args[0]));
+        final DataModel dataModel = new GroupLensDataModel(new File(args[0]));
         UserSimilarity similarity = new PearsonCorrelationSimilarity(dataModel);
         UserNeighborhood neighborhood = new NearestNUserNeighborhood(100, similarity, dataModel);
 
         Recommender recommender = new GenericUserBasedRecommender(dataModel, neighborhood, similarity);
-        Recommender cachingRecommender = new CachingRecommender(recommender);
+        final Recommender cachingRecommender = new CachingRecommender(recommender);
 
         //Evaluate
-        RMSRecommenderEvaluator evaluator = new RMSRecommenderEvaluator();
+        RMSRecommenderEvaluator rmsRecommenderEvaluator = new RMSRecommenderEvaluator();
         RecommenderBuilder recommenderBuilder = new RecommenderBuilder() {
             @Override
             public Recommender buildRecommender(DataModel dataModel) throws TasteException {
@@ -48,15 +51,15 @@ public class UserRecommenderMovieLens {
                 return new GenericUserBasedRecommender(dataModel, neighborhood, similarity);
             }
         };
-        double score = evaluator.evaluate(recommenderBuilder, null, dataModel, 0.9, 0.5);
-        System.out.println("RMSE score is "+score);
+        double score = rmsRecommenderEvaluator.evaluate(recommenderBuilder, null, dataModel, 0.9, 1.0);
+        System.out.println("RMSE score is " +score);
 
-        try(PrintWriter writer = new PrintWriter(resultFile)){
-            for (int userID=1; userID <= dataModel.getNumUsers(); userID++){
+        try(PrintWriter writer = new PrintWriter(resultFile, "UTF-8")) {
+            for (int userID = 1; userID <= dataModel.getNumUsers(); userID++){
                 List<RecommendedItem> recommendedItems = cachingRecommender.recommend(userID, 2);
-                String line = userID+" : ";
-                for (RecommendedItem recommendedItem: recommendedItems){
-                    line += recommendedItem.getItemID()+":"+recommendedItem.getValue()+",";
+                String line = userID +":";
+                for (RecommendedItem recommendedItem : recommendedItems){
+                    line += recommendedItem.getItemID()+"|"+recommendedItem.getValue()+",";
                 }
                 if (line.endsWith(",")){
                     line = line.substring(0, line.length()-1);
@@ -64,10 +67,12 @@ public class UserRecommenderMovieLens {
                 writer.write(line);
                 writer.write('\n');
             }
-        } catch (IOException ioe){
+            //writer.close();
+        } catch (IOException ioe) {
             resultFile.delete();
             throw ioe;
         }
-        System.out.println("Recommended for "+dataModel.getNumUsers()+" users and saved them to "+resultFile.getAbsolutePath());
+        System.out.println("Recommended for "+dataModel.getNumUsers() + " users "
+                + "and saved them to " + resultFile.getAbsolutePath());
     }
 }
